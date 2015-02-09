@@ -41,11 +41,8 @@ public class Main implements WindowListener{
 	private ArrayList<Location> locationList;
 	private ArrayList<String> phraseList;
 	private String outputFile;
-	//These are the unique codes that allow use of the Stream API. SHOULD NOT BE HARDCODED!!!
-	private String consumerKey = "";
-	String consumerSecret = "";
-	private String token =  "";
-	private String secret = "";
+	//This object handles loading/getting the user secrets and tokens and such
+	private APITokens api;
 	//These allow the hbc client and other components to communicate
 	private BlockingQueue<String> messageQueue;
 	private BlockingQueue<Event> eventQueue;
@@ -57,6 +54,8 @@ public class Main implements WindowListener{
 	
 
 	public Main() {
+		api = new APITokens();
+		
 		messageQueue = new LinkedBlockingQueue<String>(10000);
     	eventQueue = new LinkedBlockingQueue<Event>(1000);
     	fileWriter = new AsyncFilePrinter(messageQueue);
@@ -74,7 +73,7 @@ public class Main implements WindowListener{
 		mainPane.add("setup", setupPanel);
 		mainPane.add("streaming", streamingPanel);
 		
-    	
+    
     	JFrame frame = new JFrame("Twitter Client");
     	frame.addWindowListener(this);
     	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -91,7 +90,7 @@ public class Main implements WindowListener{
 		/*We need the host to connect to, the endpoint and the authentication*/
 		//Hosts hbcHosts = new HttpHosts(Constants.STREAM_HOST);
 		StatusesFilterEndpoint hbcEndpoint = new StatusesFilterEndpoint();
-		Authentication hbcAuth = new OAuth1(consumerKey, consumerSecret, token, secret);
+		Authentication hbcAuth = new OAuth1(api.getConsumerKey(), api.getConsumerSecret(), api.getToken(), api.getSecret());
 
 		/*We add our stream parameters to the endpoint object*/
 		if(!userList.isEmpty()) hbcEndpoint.followings(userList);

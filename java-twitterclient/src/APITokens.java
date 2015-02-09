@@ -1,12 +1,8 @@
 
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import javax.swing.JOptionPane;
 
@@ -16,7 +12,7 @@ import javax.swing.JOptionPane;
  * <P> This handles loading the API tokens from the configuration file,
  *  or making a new configuration file if necessary. 
  *  
- * @author thermalspan
+ * @author Russell Bentley
  *
  */
 public class APITokens {
@@ -29,8 +25,9 @@ public class APITokens {
 	
 	public APITokens() {
 		configFileName = System.getProperty("user.home")+System.getProperty("file.separator")+".twitterclient";
-		//First We try to read an existing config file. If found the user has the choice to use it. 
+		
 		try {
+			//First We try to read an existing config file. If found the user has the choice to use it. 
 			FileReader fr = new FileReader(configFileName);
 			BufferedReader br = new BufferedReader(fr);
 			consumerKey = br.readLine();
@@ -40,22 +37,18 @@ public class APITokens {
 			br.close();
 			
 			int choice = JOptionPane.showConfirmDialog(null, "An existing configuration file was found. Do you want to use it?");
-			switch(choice) {
-			case 0 : null;
-				break;
+		
 			//User does not want to use existing configuration,
-			case 1 : buildConfigFile();
-				break;
+			if(choice == 1) buildConfigFile();
+			//User hits cancel, exit?
+			if(choice == 2) System.exit(0);
 			
-			case 2 :
-				break;
-				
-			}
 		} catch (Exception e) {
 			buildConfigFile();
 			e.printStackTrace();
 		}
 		if(consumerKey == null | consumerSecret == null | token == null | secret == null) {
+			JOptionPane.showInternalMessageDialog(null, "Invalid configuration file found. Time for a new one!");
 			buildConfigFile();
 		}
 	}
@@ -65,17 +58,11 @@ public class APITokens {
 		System.out.println("There does not appear to be an existing config file:");
 
 		try {
-			//First we use the buffered read to get the information.
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Please enter Consumer Key:");
-			consumerKey = br.readLine();
-			System.out.println("Please enter Consumer Secret:");
-			consumerSecret = br.readLine();
-			System.out.println("Please enter Token:");
-			token = br.readLine();
-			System.out.println("Please enter Secret:");
-			secret = br.readLine();
-			br.close();
+			//We use JOptionPanes to get the information.
+			consumerKey = JOptionPane.showInputDialog("Please enter Consumer Key:");
+			consumerSecret = JOptionPane.showInputDialog("Please enter Consumer Secret:");
+			token = JOptionPane.showInputDialog("Please enter Token:");
+			secret = JOptionPane.showInputDialog("Please enter Secret:");
 			
 			//Then we use a Print Writer to make the config file. 
 			PrintWriter writer = new PrintWriter(configFileName, "UTF-8");
