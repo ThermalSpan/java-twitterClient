@@ -127,9 +127,12 @@ public class Main implements WindowListener{
 			//Start the streaming event thread
 			streamingPanel.start();
 			hbcClient.connect();
-			System.out.println("About to make file writer" + outputFile);
-			fileWriter.open(new File(outputFile));
-			new Thread(fileWriter).start();
+			
+			//new Thread(new messagePrinter(messageQueue, statsTracker)).start();
+			
+			//System.out.println("About to make file writer" + outputFile);
+			//fileWriter.open(new File(outputFile));
+			//new Thread(fileWriter).start();
 		} catch(Exception e) {
 			System.out.println("Problem starting stream" + e.toString());
 		}		
