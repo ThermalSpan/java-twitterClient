@@ -42,10 +42,10 @@ public class Main implements WindowListener{
 	private ArrayList<String> phraseList;
 	private String outputFile;
 	//These are the unique codes that allow use of the Stream API. SHOULD NOT BE HARDCODED!!!
-	private String consumerKey = "5fAxrfYZqacCbGDY2QlbUGt1c";
-	private String consumerSecret = "83fgIjfFvN1vX7Zi7p7gQIEYzRKV1BmLvaEtdRwcoTuk7MXBwp"; 
-	private String token = "2815503032-PWCBPMKyLlHbXtdQiUp4lABce6gDNsMtvRbdEe8";
-	private String secret = "qylKk5wuK1NUKGoUO2DBBniZKKJxNpKWNoT22qhf8F6Oo";
+	private String consumerKey = "";
+	String consumerSecret = "";
+	private String token =  "";
+	private String secret = "";
 	//These allow the hbc client and other components to communicate
 	private BlockingQueue<String> messageQueue;
 	private BlockingQueue<Event> eventQueue;
